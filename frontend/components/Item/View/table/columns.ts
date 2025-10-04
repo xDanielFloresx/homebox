@@ -79,6 +79,26 @@ export function makeColumns(t: (key: string) => string, refresh?: () => void): C
       cell: ({ row }) => h("span", { class: "text-sm font-medium" }, row.getValue("name")),
     },
     {
+      id: "description",
+      accessorKey: "description",
+      header: ({ column }) =>
+        h(
+          Button,
+          {
+            variant: "ghost",
+            onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+          },
+          () => sortable(column, "items.description")
+        ),
+      cell: ({ row }) => {
+        const val = row.getValue("description") as string | undefined;
+        // show a short truncated preview in the table
+        if (!val) return h("div", { class: "text-sm text-muted-foreground" }, "");
+        const short = val.length > 80 ? val.substring(0, 77) + "..." : val;
+        return h("div", { class: "text-sm", title: val }, short);
+      },
+    },
+    {
       id: "quantity",
       accessorKey: "quantity",
       header: ({ column }) =>

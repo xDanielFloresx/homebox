@@ -44,6 +44,8 @@
   const defaultPageSize = preferences.value.itemsPerTablePage;
   const tableHeadersData = preferences.value.tableHeaders;
   const defaultVisible = ["name", "quantity", "insured", "purchasePrice"];
+  // include description as selectable and visible by default
+  defaultVisible.push("description");
 
   const tableHeaders = computed(
     () =>
