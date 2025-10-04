@@ -57,7 +57,7 @@ func (ctrl *V1Controller) HandleGetLocationLabel() errchain.HandlerFunc {
 		}
 
 		hbURL := GetHBURL(r.Header.Get("Referer"), ctrl.url)
-		return generateOrPrint(ctrl, w, r, location.Name, "Homebox Location", fmt.Sprintf("%s/location/%s", hbURL, location.ID))
+		return generateOrPrint(ctrl, w, r, location.Name, "DX Lair Storage", fmt.Sprintf("%s/location/%s", hbURL, location.ID))
 	}
 }
 
