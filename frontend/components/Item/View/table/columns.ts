@@ -51,6 +51,42 @@ export function makeColumns(t: (key: string) => string, refresh?: () => void): C
       enableHiding: false,
     },
     {
+      id: "content",
+      // custom field stored in item.fields where field.name === "content"
+      header: ({ column }) =>
+        h(
+          Button,
+          {
+            variant: "ghost",
+            onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+          },
+          () => sortable(column, "items.content")
+        ),
+      cell: ({ row }) => {
+        // item.fields may not be present on ItemSummary, be defensive
+        const original = row.original as any;
+        const fields: { name: string; textValue?: string; numberValue?: number; booleanValue?: boolean; type?: string }[] | undefined =
+          original.fields;
+
+        if (!fields || !Array.isArray(fields)) {
+          return h("div", { class: "text-sm text-muted-foreground" }, "");
+        }
+
+        const f = fields.find(ff => ff && String(ff.name).toLowerCase() === "content");
+        if (!f) return h("div", { class: "text-sm text-muted-foreground" }, "");
+
+        let val: string = "";
+        if (f.type === "number" && typeof f.numberValue === "number") val = String(f.numberValue);
+        else if (f.type === "boolean") val = f.booleanValue ? "true" : "false";
+        else if (typeof f.textValue === "string") val = f.textValue;
+        else if (typeof f.numberValue === "number") val = String(f.numberValue);
+        else if (typeof f.booleanValue === "boolean") val = f.booleanValue ? "true" : "false";
+
+        const short = val.length > 80 ? val.substring(0, 77) + "..." : val;
+        return h("div", { class: "text-sm", title: val }, short);
+      },
+    },
+    {
       id: "assetId",
       accessorKey: "assetId",
       header: ({ column }) =>

@@ -46,6 +46,8 @@
   const defaultVisible = ["name", "quantity", "insured", "purchasePrice"];
   // include description as selectable and visible by default
   defaultVisible.push("description");
+  // include custom item_fields.content column
+  defaultVisible.push("content");
 
   const tableHeaders = computed(
     () =>
